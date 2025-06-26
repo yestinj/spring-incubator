@@ -1,0 +1,22 @@
+###
+GET http://localhost:8201/customers
+Content-Type: application/json
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+###
+GET http://127.0.0.1:8201/customers/1
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+### admin creds
+POST http://127.0.0.1:8201/customers
+Content-Type: application/json
+Authorization: Basic YWRtaW46aXNfYV9saWU=
+
+{
+  "username": "bobby",
+  "firstName": "bob",
+  "lastName": "loblaw",
+  "passportNumber": "MEOW",
+  "email": "bob@loblaw.net",
+  "phoneNumber": "0000"
+}

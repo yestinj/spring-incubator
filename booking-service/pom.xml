@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>entelect.training.incubator.spring.customer</groupId>
-    <artifactId>customer-service</artifactId>
+    <groupId>entelect.training.incubator.spring.booking</groupId>
+    <artifactId>booking-service</artifactId>
 
     <dependencies>
         <!-- Spring dependencies -->
@@ -54,6 +54,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
+        </dependency>
+
+        <!-- for service to service comms -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
 
         <!-- Test dependencies -->

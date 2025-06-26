@@ -1,0 +1,8 @@
+POST http://127.0.0.1:8203/bookings
+Content-Type: application/json
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+{
+  "customerId": 1,
+  "flightId": 1
+}
