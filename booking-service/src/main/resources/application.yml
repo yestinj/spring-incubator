@@ -21,4 +21,4 @@ customers:
 
 flights:
   service:
-    url: http://localhost:8203/flights
+    url: http://localhost:8202/flights

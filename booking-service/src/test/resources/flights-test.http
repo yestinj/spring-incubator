@@ -1,0 +1,23 @@
+###
+GET http://localhost:8202/flights
+Content-Type: application/json
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+###
+GET http://localhost:8202/flights/1
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+### admin creds
+POST http://localhost:8202/flights
+Content-Type: application/json
+Authorization: Basic YWRtaW46aXNfYV9saWU=
+
+{
+  "flightNumber": "999",
+  "origin": "JNB",
+  "destination": "CPT",
+  "departureTime": "2025-06-01T20:00:00",
+  "arrivalTime": "2025-06-01T22:00:00",
+  "seatsAvailable": 999,
+  "seatCost": 999.99
+}
