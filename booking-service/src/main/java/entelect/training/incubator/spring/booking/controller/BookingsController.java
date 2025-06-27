@@ -5,6 +5,7 @@ import entelect.training.incubator.spring.booking.model.BookingRequest;
 import entelect.training.incubator.spring.booking.model.BookingSearchRequest;
 import entelect.training.incubator.spring.booking.service.BookingsService;
 import entelect.training.incubator.spring.booking.service.CustomerClientService;
+import entelect.training.incubator.spring.booking.service.FlightClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,14 @@ public class BookingsController {
     private final Logger LOGGER = LoggerFactory.getLogger(BookingsController.class);
 
     private final CustomerClientService customerClientService;
+    private final FlightClientService flightClientService;
     private final BookingsService bookingService;
 
-    public BookingsController(CustomerClientService customerClientService, BookingsService bookingsService) {
+    public BookingsController(CustomerClientService customerClientService,
+                              FlightClientService flightClientService,
+                              BookingsService bookingsService) {
         this.customerClientService = customerClientService;
+        this.flightClientService = flightClientService;
         this.bookingService = bookingsService;
     }
 
@@ -33,7 +38,13 @@ public class BookingsController {
         boolean isValidCustomer = customerClientService.isValidCustomer(bookingRequest.getCustomerId());
         if (!isValidCustomer) {
             LOGGER.warn("Customer not found for booking={}", bookingRequest.getCustomerId());
-            return ResponseEntity.badRequest().body(null); // Or throw a custom exception
+            return ResponseEntity.badRequest().body("Customer does not exist"); // Or throw a custom exception
+        }
+
+        boolean isValidFlight = flightClientService.isValidFlight(bookingRequest.getFlightId());
+        if (!isValidFlight) {
+            LOGGER.warn("Flight not found for booking={}", bookingRequest.getFlightId());
+            return ResponseEntity.badRequest().body("Flight does not exist"); // Or throw a custom exception
         }
 
         final Booking savedCustomer = bookingService.createBooking(bookingRequest);

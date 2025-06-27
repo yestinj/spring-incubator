@@ -1,15 +1,10 @@
 package entelect.training.incubator.spring.booking.service;
 
 import entelect.training.incubator.spring.booking.model.Customer;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -23,16 +18,9 @@ public class CustomerClientService {
     private final String customerServiceUrl;
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomerClientService.class);
 
-    //public CustomerClientService(RestTemplate restTemplate, @Value("${customers.service.url:http://localhost:8081/api/customers}") String customerServiceUrl) {
     public CustomerClientService(RestTemplate restTemplate, @Value("${customers.service.url}") String customerServiceUrl) {
-        LOGGER.info("Instantiating CustomerClientService with restTemplate={} and customerServiceUrl={}", restTemplate, customerServiceUrl);
         this.restTemplate = restTemplate;
         this.customerServiceUrl = customerServiceUrl;
-    }
-
-    @PostConstruct
-    public void init() {
-        LOGGER.info("CustomerClientService bean initialized");
     }
 
     public boolean isValidCustomer(Integer customerId) {

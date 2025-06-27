@@ -18,3 +18,7 @@ server:
 customers:
   service:
     url: http://localhost:8201/customers
+
+flights:
+  service:
+    url: http://localhost:8203/flights
