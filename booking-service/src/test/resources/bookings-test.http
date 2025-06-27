@@ -6,3 +6,28 @@ Authorization: Basic dXNlcjp0aGVfY2FrZQ==
   "customerId": 1,
   "flightId": 1
 }
+
+###
+GET http://localhost:8203/bookings/1
+Content-Type: application/json
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+###
+POST http://localhost:8203/bookings/search
+Content-Type: application/json
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+{
+  "searchType": "CUSTOMER_SEARCH",
+  "customerId": 1
+}
+
+###
+POST http://localhost:8203/bookings/search
+Content-Type: application/json
+Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+
+{
+  "searchType": "REFERENCE_SEARCH",
+  "referenceNumber": "ABCD1234"
+}

@@ -10,6 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class CustomerClientService {
@@ -23,7 +24,7 @@ public class CustomerClientService {
         this.customerServiceUrl = customerServiceUrl;
     }
 
-    public boolean isValidCustomer(Integer customerId) {
+    public Optional<Customer> fetchCustomer(Integer customerId) {
         String url = customerServiceUrl + "/" + customerId;
         LOGGER.info("Calling customer service URL: {}", url);
         HttpHeaders headers = new HttpHeaders();
@@ -34,14 +35,14 @@ public class CustomerClientService {
             ResponseEntity<Customer> response = restTemplate.exchange(url, HttpMethod.GET, entity, Customer.class);
             LOGGER.info("Customer service response for customerId={}: status={}, body={}",
                     customerId, response.getStatusCode(), response.getBody());
-            return response.getStatusCode() == HttpStatus.OK && response.getBody() != null;
+            return response.getStatusCode() == HttpStatus.OK ? Optional.ofNullable(response.getBody()) : Optional.empty();
         } catch (HttpClientErrorException ex) {
             LOGGER.error("Customer service error for customerId={}: status={}, message={}",
                     customerId, ex.getStatusCode(), ex.getMessage());
-            return false;
+            return Optional.empty();
         } catch (Exception ex) {
             LOGGER.error("Unexpected error for customerId={}: message={}", customerId, ex.getMessage());
-            return false;
+            return Optional.empty();
         }
     }
 }

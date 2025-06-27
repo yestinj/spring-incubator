@@ -10,6 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Base64;
+import java.util.Optional;
 
 @Service
 public class FlightClientService {
@@ -23,7 +24,7 @@ public class FlightClientService {
         this.flightServiceUrl = flightServiceUrl;
     }
 
-    public boolean isValidFlight(Integer flightId) {
+    public Optional<Flight> fetchFlightDetails(Integer flightId) {
         String url = flightServiceUrl + "/" + flightId;
         LOGGER.info("Calling flight service URL: {}", url);
         HttpHeaders headers = new HttpHeaders();
@@ -34,14 +35,14 @@ public class FlightClientService {
             ResponseEntity<Flight> response = restTemplate.exchange(url, HttpMethod.GET, entity, Flight.class);
             LOGGER.info("Flight service response for flightId={}: status={}, body={}",
                     flightId, response.getStatusCode(), response.getBody());
-            return response.getStatusCode() == HttpStatus.OK && response.getBody() != null;
+            return response.getStatusCode() == HttpStatus.OK ? Optional.ofNullable(response.getBody()) : Optional.empty();
         } catch (HttpClientErrorException ex) {
             LOGGER.error("Flight service error for flightId={}: status={}, message={}",
                     flightId, ex.getStatusCode(), ex.getMessage());
-            return false;
+            return Optional.empty();
         } catch (Exception ex) {
             LOGGER.error("Unexpected error for customerId={}: message={}", flightId, ex.getMessage());
-            return false;
+            return Optional.empty();
         }
     }
 }

@@ -1,16 +1,17 @@
 package entelect.training.incubator.spring.booking.controller;
 
-import entelect.training.incubator.spring.booking.model.Booking;
-import entelect.training.incubator.spring.booking.model.BookingRequest;
-import entelect.training.incubator.spring.booking.model.BookingSearchRequest;
+import entelect.training.incubator.spring.booking.model.*;
 import entelect.training.incubator.spring.booking.service.BookingsService;
 import entelect.training.incubator.spring.booking.service.CustomerClientService;
 import entelect.training.incubator.spring.booking.service.FlightClientService;
+import entelect.training.incubator.spring.booking.service.LoyaltyClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("bookings")
@@ -20,13 +21,16 @@ public class BookingsController {
 
     private final CustomerClientService customerClientService;
     private final FlightClientService flightClientService;
+    private final LoyaltyClientService loyaltyClientService;
     private final BookingsService bookingService;
 
     public BookingsController(CustomerClientService customerClientService,
                               FlightClientService flightClientService,
+                              LoyaltyClientService loyaltyClientService,
                               BookingsService bookingsService) {
         this.customerClientService = customerClientService;
         this.flightClientService = flightClientService;
+        this.loyaltyClientService = loyaltyClientService;
         this.bookingService = bookingsService;
     }
 
@@ -35,22 +39,24 @@ public class BookingsController {
         LOGGER.info("Processing booking creation request for booking={}", bookingRequest);
 
         // validate
-        boolean isValidCustomer = customerClientService.isValidCustomer(bookingRequest.getCustomerId());
-        if (!isValidCustomer) {
+        Optional<Customer> customer = customerClientService.fetchCustomer(bookingRequest.getCustomerId());
+        if (customer.isEmpty()) {
             LOGGER.warn("Customer not found for booking={}", bookingRequest.getCustomerId());
             return ResponseEntity.badRequest().body("Customer does not exist"); // Or throw a custom exception
         }
 
-        boolean isValidFlight = flightClientService.isValidFlight(bookingRequest.getFlightId());
-        if (!isValidFlight) {
+        Optional<Flight> flight = flightClientService.fetchFlightDetails(bookingRequest.getFlightId());
+        if (flight.isEmpty()) {
             LOGGER.warn("Flight not found for booking={}", bookingRequest.getFlightId());
             return ResponseEntity.badRequest().body("Flight does not exist"); // Or throw a custom exception
         }
 
-        final Booking savedCustomer = bookingService.createBooking(bookingRequest);
+        final Booking savedBooking = bookingService.createBooking(bookingRequest);
+
+        loyaltyClientService.captureRewards(customer.get().getPassportNumber(), flight.get().getSeatCost());
 
         LOGGER.trace("Booking created");
-        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
