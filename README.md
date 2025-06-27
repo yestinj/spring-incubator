@@ -19,3 +19,4 @@ Check the ```SecurityConfig.java``` classes for credentials.
 
 ## Some notes
 * Always <b>build</b> your project before pushing. There is no build server to check whether your code works
+* Use Java 17, or you're going to have a hard time.
