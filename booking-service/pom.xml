@@ -49,13 +49,6 @@
             <artifactId>hsqldb</artifactId>
         </dependency>
 
-        <!-- Lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.38</version>
-        </dependency>
-
         <!-- for service to service comms -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
