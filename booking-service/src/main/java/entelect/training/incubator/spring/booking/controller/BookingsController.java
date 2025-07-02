@@ -1,5 +1,6 @@
 package entelect.training.incubator.spring.booking.controller;
 
+import entelect.training.incubator.spring.booking.gen.CaptureRewardsResponse;
 import entelect.training.incubator.spring.booking.model.*;
 import entelect.training.incubator.spring.booking.service.BookingsService;
 import entelect.training.incubator.spring.booking.service.CustomerClientService;
@@ -53,7 +54,8 @@ public class BookingsController {
 
         final Booking savedBooking = bookingService.createBooking(bookingRequest);
 
-        loyaltyClientService.captureRewards(customer.get().getPassportNumber(), flight.get().getSeatCost());
+        CaptureRewardsResponse rewardsResponse = loyaltyClientService.captureRewards(customer.get().getPassportNumber(), flight.get().getSeatCost());
+        LOGGER.info("Loyalty capture rewards balance {}", rewardsResponse.getBalance());
 
         LOGGER.trace("Booking created");
         return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
