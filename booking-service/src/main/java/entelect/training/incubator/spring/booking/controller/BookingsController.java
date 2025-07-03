@@ -1,11 +1,9 @@
 package entelect.training.incubator.spring.booking.controller;
 
 import entelect.training.incubator.spring.booking.gen.CaptureRewardsResponse;
+import entelect.training.incubator.spring.booking.jms.TextMessage;
 import entelect.training.incubator.spring.booking.model.*;
-import entelect.training.incubator.spring.booking.service.BookingsService;
-import entelect.training.incubator.spring.booking.service.CustomerClientService;
-import entelect.training.incubator.spring.booking.service.FlightClientService;
-import entelect.training.incubator.spring.booking.service.LoyaltyClientService;
+import entelect.training.incubator.spring.booking.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,15 +21,18 @@ public class BookingsController {
     private final CustomerClientService customerClientService;
     private final FlightClientService flightClientService;
     private final LoyaltyClientService loyaltyClientService;
+    private final NotificationService notificationService;
     private final BookingsService bookingService;
 
     public BookingsController(CustomerClientService customerClientService,
                               FlightClientService flightClientService,
                               LoyaltyClientService loyaltyClientService,
+                              NotificationService notificationService,
                               BookingsService bookingsService) {
         this.customerClientService = customerClientService;
         this.flightClientService = flightClientService;
         this.loyaltyClientService = loyaltyClientService;
+        this.notificationService = notificationService;
         this.bookingService = bookingsService;
     }
 
@@ -56,6 +57,19 @@ public class BookingsController {
 
         CaptureRewardsResponse rewardsResponse = loyaltyClientService.captureRewards(customer.get().getPassportNumber(), flight.get().getSeatCost());
         LOGGER.info("Loyalty capture rewards balance {}", rewardsResponse.getBalance());
+
+        TextMessage textMessage = new TextMessage(
+                customer.get().getPhoneNumber(),
+                "Molo Air: Confirming flight %s booked for %s %s on %s."
+                        .formatted(
+                                flight.get().getFlightNumber(),
+                                customer.get().getFirstName(),
+                                customer.get().getLastName(),
+                                flight.get().getDepartureTime()
+                        )
+        );
+        notificationService.sendMessage(textMessage);
+        LOGGER.info("Adding notification to queue {}", textMessage);
 
         LOGGER.trace("Booking created");
         return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
