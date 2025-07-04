@@ -1,16 +1,20 @@
-###
+### Fetch all flights
 GET http://localhost:8202/flights
 Content-Type: application/json
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+#Authorization: Basic user the_cake
 
-###
+### Fetch a specific flight
 GET http://localhost:8202/flights/1
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+#Authorization: Basic user the_cake
 
-### admin creds
+### Fetch flight specials
+GET http://localhost:8202/flights/specials
+Authorization: Basic loyalty_user the_cheese_cake
+
+### Create a flight
 POST http://localhost:8202/flights
 Content-Type: application/json
-Authorization: Basic YWRtaW46aXNfYV9saWU=
+Authorization: Basic admin is_a_lie
 
 {
   "flightNumber": "999",

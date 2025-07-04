@@ -1,16 +1,16 @@
-###
+### Fetch customers
 GET http://localhost:8201/customers
 Content-Type: application/json
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+Authorization: Basic user the_cake
 
-###
+### Fetch a customer
 GET http://localhost:8201/customers/1
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+Authorization: Basic user the_cake
 
-### admin creds
+### Create a customer
 POST http://localhost:8201/customers
 Content-Type: application/json
-Authorization: Basic YWRtaW46aXNfYV9saWU=
+Authorization: Basic admin is_a_lie
 
 {
   "username": "bobby",

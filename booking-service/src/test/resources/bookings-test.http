@@ -1,31 +1,32 @@
+### Create a booking
 POST http://localhost:8203/bookings
 Content-Type: application/json
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+Authorization: Basic user the_cake
 
 {
   "customerId": 1,
   "flightId": 1
 }
 
-###
+### Fetch a booking
 GET http://localhost:8203/bookings/1
 Content-Type: application/json
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+Authorization: Basic user the_cake
 
-###
+### Search for a booking by customer
 POST http://localhost:8203/bookings/search
 Content-Type: application/json
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+Authorization: Basic user the_cake
 
 {
   "searchType": "CUSTOMER_SEARCH",
   "customerId": 1
 }
 
-###
+### Search for booking by ref
 POST http://localhost:8203/bookings/search
 Content-Type: application/json
-Authorization: Basic dXNlcjp0aGVfY2FrZQ==
+Authorization: Basic user the_cake
 
 {
   "searchType": "REFERENCE_SEARCH",
