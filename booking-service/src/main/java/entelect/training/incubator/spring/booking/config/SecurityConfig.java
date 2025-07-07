@@ -41,6 +41,8 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable() // !!! Disclaimer: NEVER DISABLE CSRF IN PRODUCTION !!!
                 .authorizeHttpRequests()
+                // Allow access to OpenAPI endpoints without authentication
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.GET, "/booking/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.POST, "/booking/**").hasAnyRole("USER", "SYSTEM", "ADMIN")
                 .anyRequest().authenticated()
