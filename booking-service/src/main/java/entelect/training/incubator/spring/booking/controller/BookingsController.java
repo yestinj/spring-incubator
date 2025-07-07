@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("bookings")
+@Tag(name = "bookings", description = "Bookings controller")
 public class BookingsController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(BookingsController.class);
@@ -36,7 +38,9 @@ public class BookingsController {
         this.bookingService = bookingsService;
     }
 
+    @Tag(name = "createBooking")
     @PostMapping
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true)
     public ResponseEntity<?> createBooking(@RequestBody BookingRequest bookingRequest) {
         LOGGER.info("Processing booking creation request for booking={}", bookingRequest);
 
@@ -75,6 +79,7 @@ public class BookingsController {
         return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
     }
 
+    @Tag(name = "getById", description = "Find a booking by its id")
     @GetMapping("{id}")
     public ResponseEntity<?> getBookingById(@PathVariable Integer id) {
         LOGGER.info("Processing booking search request for booking id={}", id);
@@ -89,7 +94,9 @@ public class BookingsController {
         return ResponseEntity.notFound().build();
     }
 
+    @Tag(name = "search", description = "Search for a booking by customer id or reference number")
     @PostMapping("/search")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true)
     public ResponseEntity<?> searchBookings(@RequestBody BookingSearchRequest searchRequest) {
         LOGGER.info("Processing booking search request for request {}", searchRequest);
 
