@@ -2,6 +2,8 @@
 POST http://localhost:8203/bookings
 Content-Type: application/json
 Authorization: Basic user the_cake
+#Authorization: Basic loyalty_user the_cheese_cake
+
 
 {
   "customerId": 1,

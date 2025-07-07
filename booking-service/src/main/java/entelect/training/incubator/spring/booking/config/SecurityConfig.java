@@ -31,6 +31,8 @@ public class SecurityConfig {
     InMemoryUserDetailsManager inMemoryAuthManager() {
         return new InMemoryUserDetailsManager(
                 User.builder().username("user").password("{noop}the_cake").roles("USER").build(),
+                User.builder().username("loyalty_user").password("{noop}the_cheese_cake")
+                        .roles("USER", "LOYALTY_USER").build(),
                 User.builder().username("admin").password("{noop}is_a_lie").roles("ADMIN").build()
         );
     }
