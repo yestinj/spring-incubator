@@ -169,6 +169,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <!-- docs-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -187,7 +188,6 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            docs-->
             <plugin>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-maven-plugin</artifactId>

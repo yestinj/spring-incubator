@@ -1,5 +1,6 @@
 package entelect.training.incubator.spring.flight.model;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class FlightsSearchRequest {
+    @NotNull
     private SearchType searchType;
 
     private Integer daysToDeparture;
