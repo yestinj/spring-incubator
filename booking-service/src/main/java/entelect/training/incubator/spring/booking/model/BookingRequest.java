@@ -3,6 +3,7 @@ package entelect.training.incubator.spring.booking.model;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,8 +15,10 @@ public class BookingRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
     private Integer customerId;
 
+    @NotNull
     private Integer flightId;
 }
 
