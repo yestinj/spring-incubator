@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers(HttpMethod.GET, "/flights/specials/**").hasAnyRole("LOYALTY_USER", "ADMIN")
                 .requestMatchers(HttpMethod.GET, "/flights/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/flights/search/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/flights/**").hasAnyRole("SYSTEM", "ADMIN")
                 .anyRequest().authenticated()
                 .and()

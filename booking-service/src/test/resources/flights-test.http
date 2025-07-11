@@ -25,3 +25,15 @@ Authorization: Basic admin is_a_lie
   "seatsAvailable": 999,
   "seatCost": 999.99
 }
+
+### Search for a flight
+POST http://localhost:8202/flights/search
+Content-Type: application/json
+Authorization: Basic user the_cake
+
+{
+  "searchType": "ORIGIN_DESTINATION_SEARCH",
+  "referenceNumber": "ABCD1234",
+  "origin": "JNB",
+  "destination": "CPT"
+}
