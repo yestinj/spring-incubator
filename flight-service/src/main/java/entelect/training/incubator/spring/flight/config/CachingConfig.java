@@ -15,8 +15,9 @@ public class CachingConfig {
 
     @Bean
     public CacheManager cacheManager(Caffeine<Object, Object> caffeine) {
-        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
+        CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager("flight_cache", "flight_search_cache");
         caffeineCacheManager.setCaffeine(caffeine);
+
         return caffeineCacheManager;
     }
 

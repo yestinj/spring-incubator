@@ -6,7 +6,9 @@ import entelect.training.incubator.spring.flight.service.FlightsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +31,10 @@ public class FlightsController {
     @Tag(name = "createFlight", description = "Create a flight")
     @PostMapping
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true)
+    @Caching(evict = {
+            @CacheEvict(value = "flight_cache", allEntries = true),
+            @CacheEvict(value = "flight_search_cache", allEntries = true)
+    })
     public ResponseEntity<?> createFlight(@RequestBody Flight flight) {
         LOGGER.info("Processing flight creation request for flight={}", flight);
 
@@ -72,6 +78,7 @@ public class FlightsController {
     @Tag(name = "searchFlights", description = "Search for a flight")
     @PostMapping("/search")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(required = true)
+    @Cacheable(value = "flight_search_cache", key = "#searchRequest")
     public ResponseEntity<?> searchFlights(@RequestBody FlightsSearchRequest searchRequest) {
         LOGGER.info("Processing flight search request: {}", searchRequest);
 
